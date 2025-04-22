@@ -2,6 +2,7 @@ package org.mrshoffen.tasktracker.user.profile.http.advice;
 
 
 import org.mrshoffen.tasktracker.user.profile.exception.UserAlreadyExistsException;
+import org.mrshoffen.tasktracker.user.profile.exception.UserNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,12 +33,12 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
         ProblemDetail problem = generateProblemDetail(CONFLICT, e.getMessage());
         return ResponseEntity.status(CONFLICT).body(problem);
     }
-//
-//    @ExceptionHandler(UserNotFoundException.class)
-//    public ResponseEntity<ProblemDetail> handleUserNotFoundException(UserNotFoundException e) {
-//        ProblemDetail problem = generateProblemDetail(NOT_FOUND, e.getMessage());
-//        return ResponseEntity.status(NOT_FOUND).body(problem);
-//    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleUserNotFoundException(UserNotFoundException e) {
+        ProblemDetail problem = generateProblemDetail(NOT_FOUND, e.getMessage());
+        return ResponseEntity.status(NOT_FOUND).body(problem);
+    }
 //
 //    @ExceptionHandler(IncorrectPasswordException.class)
 //    public ResponseEntity<ProblemDetail> handleIncorrectPasswordException(IncorrectPasswordException e) {

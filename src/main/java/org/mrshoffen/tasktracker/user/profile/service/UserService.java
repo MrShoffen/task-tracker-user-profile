@@ -2,14 +2,13 @@ package org.mrshoffen.tasktracker.user.profile.service;
 
 import lombok.RequiredArgsConstructor;
 import org.mrshoffen.tasktracker.user.profile.exception.UserAlreadyExistsException;
+import org.mrshoffen.tasktracker.user.profile.exception.UserNotFoundException;
 import org.mrshoffen.tasktracker.user.profile.model.dto.UserCreateDto;
 import org.mrshoffen.tasktracker.user.profile.model.dto.UserResponseDto;
 import org.mrshoffen.tasktracker.user.profile.model.entity.User;
 import org.mrshoffen.tasktracker.user.profile.repositroy.UserRepository;
 import org.mrshoffen.tasktracker.user.profile.util.mapper.UserMapper;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,6 +33,15 @@ public class UserService {
 
 
         return userMapper.toDto(userForSave);
+    }
+
+    public UserResponseDto getUser(String email, String password) {
+        //todo handle encryption
+        return userRepository
+                .findByEmailIgnoreCaseAndPassword(email, password)
+                .map(userMapper::toDto)
+                .orElseThrow(() -> new UserNotFoundException("Некорректная почта или пароль"));
+
     }
 
 
