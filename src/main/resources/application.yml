@@ -1,5 +1,4 @@
 ### Configurations from config server
-
 discovery-service-user:
   server:
     hostname: localhost #discovery-user profile property
