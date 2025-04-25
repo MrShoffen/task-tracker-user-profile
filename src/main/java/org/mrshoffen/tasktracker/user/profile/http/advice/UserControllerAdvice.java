@@ -1,6 +1,7 @@
 package org.mrshoffen.tasktracker.user.profile.http.advice;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.mrshoffen.tasktracker.user.profile.exception.UserAlreadyExistsException;
 import org.mrshoffen.tasktracker.user.profile.exception.UserNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
 
+@Slf4j
 @RestControllerAdvice
 public class UserControllerAdvice extends ResponseEntityExceptionHandler {
 
@@ -39,14 +41,10 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
         ProblemDetail problem = generateProblemDetail(NOT_FOUND, e.getMessage());
         return ResponseEntity.status(NOT_FOUND).body(problem);
     }
-//
-//    @ExceptionHandler(IncorrectPasswordException.class)
-//    public ResponseEntity<ProblemDetail> handleIncorrectPasswordException(IncorrectPasswordException e) {
-//        ProblemDetail problem = generateProblemDetail(UNAUTHORIZED, e.getMessage());
-//        return ResponseEntity.status(UNAUTHORIZED).body(problem);
-//    }
 
     private ProblemDetail generateProblemDetail(HttpStatus status, String detail) {
+        log.warn(detail);
+
         var problemDetail = ProblemDetail.forStatusAndDetail(status, detail);
         problemDetail.setTitle(status.getReasonPhrase());
         return problemDetail;

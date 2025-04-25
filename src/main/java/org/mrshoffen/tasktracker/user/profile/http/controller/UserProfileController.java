@@ -4,7 +4,8 @@ package org.mrshoffen.tasktracker.user.profile.http.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.mrshoffen.tasktracker.commons.kafka.event.UserCreatedEvent;
+import lombok.extern.slf4j.Slf4j;
+import org.mrshoffen.tasktracker.commons.web.authentication.AuthenticationAttributes;
 import org.mrshoffen.tasktracker.user.profile.model.dto.UserCreateDto;
 import org.mrshoffen.tasktracker.user.profile.model.dto.UserResponseDto;
 import org.mrshoffen.tasktracker.user.profile.service.UserService;
@@ -13,13 +14,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import static org.mrshoffen.tasktracker.commons.web.authentication.AuthenticationAttributes.*;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@Slf4j
 public class UserProfileController {
-
 
     private final UserService userService;
 
@@ -31,14 +32,15 @@ public class UserProfileController {
     }
 
     @GetMapping("/me")
-    ResponseEntity<UserResponseDto> me(HttpServletRequest request){
+    ResponseEntity<String> me(@RequestHeader(AUTHORIZED_USER_HEADER_NAME) String userId){
 
-        return null;
+        return ResponseEntity.ok(userId);
     }
 
     @PostMapping
     ResponseEntity<UserResponseDto> create(@Valid @RequestBody UserCreateDto userCreateDto){
         UserResponseDto createdUser = userService.createUser(userCreateDto);
+        log.info("New user created: {}", createdUser);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
