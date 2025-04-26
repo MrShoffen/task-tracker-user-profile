@@ -1,4 +1,4 @@
-package org.mrshoffen.tasktracker.user.profile.repositroy;
+package org.mrshoffen.tasktracker.user.profile.repository;
 
 
 import org.mrshoffen.tasktracker.user.profile.model.entity.User;

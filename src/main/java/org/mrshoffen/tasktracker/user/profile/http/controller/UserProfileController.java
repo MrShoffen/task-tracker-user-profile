@@ -27,8 +27,9 @@ public class UserProfileController {
     private final Environment env;
 
     @GetMapping("/status")
-    String check(){
-        return "OK - " + env.getProperty("local.server.port");
+    String check(HttpServletRequest request){
+        String remoteAddr = request.getRemoteAddr();
+        return "OK - " + remoteAddr + " " + env.getProperty("local.server.port");
     }
 
     @GetMapping("/me")
@@ -38,8 +39,9 @@ public class UserProfileController {
     }
 
     @PostMapping
-    ResponseEntity<UserResponseDto> create(@Valid @RequestBody UserCreateDto userCreateDto){
-        UserResponseDto createdUser = userService.createUser(userCreateDto);
+    ResponseEntity<UserResponseDto> create(@Valid @RequestBody UserCreateDto userCreateDto,
+                                           @RequestHeader(value = "X-Forwarded-For", required = false) String userIp){
+        UserResponseDto createdUser = userService.createUser(userCreateDto, userIp);
         log.info("New user created: {}", createdUser);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);

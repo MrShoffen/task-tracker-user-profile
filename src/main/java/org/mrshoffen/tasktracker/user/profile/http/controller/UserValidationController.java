@@ -22,12 +22,12 @@ public class UserValidationController {
     private final UserService userService;
 
     @GetMapping
-    ResponseEntity<UUID> validateUserCredentials(@RequestParam("email") String email,
+    ResponseEntity<String> validateUserCredentials(@RequestParam("email") String email,
                                                 @RequestParam("password") String password) {
         UserResponseDto user = userService.getUser(email, password);
         log.info("User {} found! ", email);
 
-        return ResponseEntity.ok(user.getId());
+        return ResponseEntity.ok(user.getId().toString());
     }
 
 }
