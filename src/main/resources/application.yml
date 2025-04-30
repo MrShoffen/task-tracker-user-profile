@@ -1,8 +1,8 @@
 ### Configurations from config server
 discovery-service-user:
   server:
-    hostname: localhost #discovery-user profile property
-    port: 8010 #discovery-user profile properdiscovery
+    hostname: localhost
+    port: 8010
   credentials:
     username: user
     password: pass

@@ -24,6 +24,7 @@ public class EventListener {
 
     }
 
+    //если регистрация не удалась - удаляем ранее сохраненного юзера
     @KafkaListener(topics = RegistrationFailedEvent.TOPIC)
     public void handleRegistrationFail(RegistrationFailedEvent event) {
         log.info("Received event in topic {} - {}", RegistrationFailedEvent.TOPIC, event);
