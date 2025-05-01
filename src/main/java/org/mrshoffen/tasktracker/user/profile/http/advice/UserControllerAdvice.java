@@ -32,20 +32,20 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ProblemDetail> handleUserNotFoundException(UserNotFoundException e) {
-        ProblemDetail problem = generateProblemDetail(NOT_FOUND, e.getMessage());
+        ProblemDetail problem = generateProblemDetail(NOT_FOUND, e);
         return ResponseEntity.status(NOT_FOUND).body(problem);
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ProblemDetail> handleUserAlreadyExistException(UserAlreadyExistsException e) {
-        ProblemDetail problem = generateProblemDetail(CONFLICT, e.getMessage());
+        ProblemDetail problem = generateProblemDetail(CONFLICT, e);
         return ResponseEntity.status(CONFLICT).body(problem);
     }
 
-    private ProblemDetail generateProblemDetail(HttpStatus status, String detail) {
-        log.warn(detail);
+    private ProblemDetail generateProblemDetail(HttpStatus status, Exception ex) {
+        log.warn("Error occured: {}", ex.getMessage());
 
-        var problemDetail = ProblemDetail.forStatusAndDetail(status, detail);
+        var problemDetail = ProblemDetail.forStatusAndDetail(status, ex.getMessage());
         problemDetail.setTitle(status.getReasonPhrase());
         return problemDetail;
     }

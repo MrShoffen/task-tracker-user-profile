@@ -1,7 +1,6 @@
 package org.mrshoffen.tasktracker.user.profile.http.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.mrshoffen.tasktracker.user.profile.exception.UserNotFoundException;
 import org.mrshoffen.tasktracker.user.profile.model.entity.User;
 import org.mrshoffen.tasktracker.user.profile.service.UserService;
@@ -16,7 +15,6 @@ import java.util.Optional;
  * Эндпоинты только для межсервисного взаимодействия
  * */
 @RequiredArgsConstructor
-@Slf4j
 @RestController
 @RequestMapping("/internal/users")
 public class InternalController {

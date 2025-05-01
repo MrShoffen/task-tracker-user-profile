@@ -24,11 +24,11 @@ public class UserService {
     private final UserRepository userRepository;
 
     public void createUser(RegistrationAttemptEvent event) {
-        User userForSave = userMapper.toUserFromEvent(event);
+        User userForSave = userMapper.userFromEvent(event);
         userRepository.save(userForSave);
     }
 
-    public UserResponseDto findUserById(UUID id) {
+    public UserResponseDto getUserById(UUID id) {
         return userRepository.findById(id)
                 .map(userMapper::toDto)
                 .orElseThrow(
@@ -45,7 +45,6 @@ public class UserService {
     public void deleteUserById(UUID id) {
         userRepository.deleteById(id);
         log.info("User deleted: {}", id);
-
     }
 
 

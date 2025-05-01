@@ -13,5 +13,5 @@ public interface UserMapper {
     UserResponseDto toDto(User user);
 
     @Mapping(source = "registrationId", target = "id")
-    User toUserFromEvent(RegistrationAttemptEvent event);
+    User userFromEvent(RegistrationAttemptEvent event);
 }
