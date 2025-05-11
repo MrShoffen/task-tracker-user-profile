@@ -3,6 +3,7 @@ package org.mrshoffen.tasktracker.user.profile.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mrshoffen.tasktracker.commons.kafka.event.registration.RegistrationAttemptEvent;
+import org.mrshoffen.tasktracker.commons.kafka.event.registration.RegistrationSuccessfulEvent;
 import org.mrshoffen.tasktracker.user.profile.exception.UserNotFoundException;
 import org.mrshoffen.tasktracker.user.profile.model.dto.UserResponseDto;
 import org.mrshoffen.tasktracker.user.profile.model.entity.User;
@@ -23,7 +24,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public void createUser(RegistrationAttemptEvent event) {
+    public void createUser(RegistrationSuccessfulEvent event) {
         User userForSave = userMapper.userFromEvent(event);
         userRepository.save(userForSave);
     }
@@ -39,6 +40,10 @@ public class UserService {
     public Optional<User> findUserByEmail(String email) {
         return userRepository
                 .findByEmailIgnoreCase(email);
+    }
+
+    public Optional<User> findUserById(UUID id) {
+        return userRepository.findById(id);
     }
 
     @Transactional

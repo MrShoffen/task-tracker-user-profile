@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mrshoffen.tasktracker.commons.kafka.event.registration.RegistrationAttemptEvent;
 import org.mrshoffen.tasktracker.commons.kafka.event.registration.RegistrationFailedEvent;
+import org.mrshoffen.tasktracker.commons.kafka.event.registration.RegistrationSuccessfulEvent;
 import org.mrshoffen.tasktracker.user.profile.service.UserService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -16,19 +17,10 @@ public class EventListener {
 
     private final UserService userService;
 
-    //Сохраняем пользователя даже при попытке регистрации. Если будет ивент на неудачную регу - откатываем
-    @KafkaListener(topics = RegistrationAttemptEvent.TOPIC)
-    public void handleRegistrationAttempt(RegistrationAttemptEvent event) {
-        log.info("Received event in topic {} - {}", RegistrationAttemptEvent.TOPIC, event);
+    @KafkaListener(topics = RegistrationSuccessfulEvent.TOPIC)
+    public void handleRegistrationAttempt(RegistrationSuccessfulEvent event) {
+        log.info("Received event in topic {} - {}", RegistrationSuccessfulEvent.TOPIC, event);
         userService.createUser(event);
-
-    }
-
-    //если регистрация не удалась - удаляем ранее сохраненного юзера
-    @KafkaListener(topics = RegistrationFailedEvent.TOPIC)
-    public void handleRegistrationFail(RegistrationFailedEvent event) {
-        log.info("Received event in topic {} - {}", RegistrationFailedEvent.TOPIC, event);
-        userService.deleteUserById(event.getRegistrationId());
 
     }
 

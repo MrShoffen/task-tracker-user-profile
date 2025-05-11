@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /*
  * Эндпоинты только для межсервисного взаимодействия
@@ -29,13 +30,20 @@ public class InternalController {
                         () -> new UserNotFoundException("Пользователь с почтой %s не найден".formatted(email)));
     }
 
-
     @GetMapping("/id")
     String userId(@RequestParam("email") String email) {
         return userService.findUserByEmail(email)
                 .map(user -> user.getId().toString())
                 .orElseThrow(
                         () -> new UserNotFoundException("Пользователь с почтой %s не найден".formatted(email)));
+    }
+
+    @GetMapping("/email")
+    String userEmail(@RequestParam("id") UUID id) {
+        return userService.findUserById(id)
+                .map(User::getEmail)
+                .orElseThrow(
+                        () -> new UserNotFoundException("Пользователь с id %s не найден".formatted(id)));
     }
 
 
