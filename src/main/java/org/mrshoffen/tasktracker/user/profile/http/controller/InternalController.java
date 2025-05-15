@@ -1,6 +1,7 @@
 package org.mrshoffen.tasktracker.user.profile.http.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.mrshoffen.tasktracker.commons.web.dto.UserResponseDto;
 import org.mrshoffen.tasktracker.user.profile.exception.UserNotFoundException;
 import org.mrshoffen.tasktracker.user.profile.model.entity.User;
 import org.mrshoffen.tasktracker.user.profile.service.UserService;
@@ -44,6 +45,11 @@ public class InternalController {
                 .map(User::getEmail)
                 .orElseThrow(
                         () -> new UserNotFoundException("Пользователь с id %s не найден".formatted(id)));
+    }
+
+    @GetMapping("/information")
+    UserResponseDto userInformation(@RequestParam("id") UUID id) {
+        return userService.getUserById(id);
     }
 
 
