@@ -46,13 +46,6 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    @Transactional
-    public void deleteUserById(UUID id) {
-        userRepository.deleteById(id);
-        log.info("User deleted: {}", id);
-    }
-
-
     public UserResponseDto updateUserProfileInformation(UUID userId, ProfileEditDto editDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(
